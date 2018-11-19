@@ -29,7 +29,7 @@ class Registration extends Component {
 			}
 		});
 		const parsedResponse = await registrationResponse.json();
-		if(parsedResponse.data == 'registration successful'){
+		if(parsedResponse.data === 'registration successful'){
 			console.log('successful registration');
 			this.props.history.push('/movies')
 		} else {

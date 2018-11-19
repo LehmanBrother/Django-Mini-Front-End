@@ -20,7 +20,7 @@ class Login extends Component {
   handleSubmit = async (e) => {
     e.preventDefault();
     const csrfCookie = getCookie('csrftoken');
-    const loginResponse = await fetch('http://localhost:8000/users/', {
+    const loginResponse = await fetch('http://localhost:8000/users/login/', {
       method: 'POST',
       credentials: 'include', // this sends our session cookie with our request
       body: JSON.stringify(this.state),
