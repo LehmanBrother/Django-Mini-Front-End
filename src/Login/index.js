@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Form, Label, Button } from 'semantic-ui-react';
+import getCookie from 'js-cookie';
 import './style.css';
 
 class Login extends Component {
@@ -18,12 +19,13 @@ class Login extends Component {
   }
   handleSubmit = async (e) => {
     e.preventDefault();
-
-    const loginResponse = await fetch('http://localhost:9000/auth', {
+    const csrfCookie = getCookie('csrftoken');
+    const loginResponse = await fetch('http://localhost:8000/users/', {
       method: 'POST',
       credentials: 'include', // this sends our session cookie with our request
       body: JSON.stringify(this.state),
       headers: {
+        'X-CSRFToken': csrfCookie,
         'Content-Type': 'application/json'
       }
     });
