@@ -71,6 +71,7 @@ class MovieContainer extends Component {
     // becuase after we create it, we want to add it to the movies array
   }
   deleteMovie = async (id) => {
+    console.log(id, '<---Movie ID');
     const csrfCookie = getCookie('csrftoken');
     const deleteMovieResponse = await fetch('http://localhost:8000/movies/' + id + '/', {
       headers: {
@@ -107,18 +108,23 @@ class MovieContainer extends Component {
     e.preventDefault();
     try {
     const csrfCookie = getCookie('csrftoken');
-    const editMovieResponse = await fetch('http://localhost:8000/movies/'+ this.state.movieToEdit.id, {
+    const editMovieResponse = await fetch('http://localhost:8000/movies/'+ this.state.movieToEdit.id + '/', {
       method: 'PUT',
-      body: JSON.stringify([...this.state.movieToEdit]),
+      body: JSON.stringify({
+        title: this.state.movieToEdit.title,
+        description: this.state.movieToEdit.description
+      }),
       credentials: 'include',
       headers: {
         'Content-Type': 'application/json',
         'X-CSRFToken': csrfCookie
       }
     })
+    console.log(csrfCookie, '<--coooookie');
+    console.log(editMovieResponse, '<--response');
     const editMovieResponseParsed = await editMovieResponse.json();
     const newMovieArray = this.state.movies.map((movie) => {
-      if(movie.id === editMovieResponseParsed.data.id){
+      if(movie.id == editMovieResponseParsed.data.id){
         movie = editMovieResponseParsed.data
       }
       return movie
