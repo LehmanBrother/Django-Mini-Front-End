@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import CreateMovie from '../CreateMovie';
 import MovieList from '../MovieList';
 import EditMovie from '../EditMovie';
-import { Grid } from 'semantic-ui-react';
+import { Grid, Modal } from 'semantic-ui-react';
 import getCookie from 'js-cookie';
 
 class MovieContainer extends Component {
@@ -105,6 +105,32 @@ class MovieContainer extends Component {
   closeAndEdit = async (e) => {
     // Put request,
     e.preventDefault();
+    try {
+    const csrfCookie = getCookie('csrftoken');
+    const editMovieResponse = await fetch('http://localhost:8000/movies/'+ this.state.movieToEdit.id, {
+      method: 'PUT',
+      body: JSON.stringify([...this.state.movieToEdit]),
+      credentials: 'include',
+      headers: {
+        'Content-Type': 'application/json',
+        'X-CSRFToken': csrfCookie
+      }
+    })
+    const editMovieResponseParsed = await editMovieResponse.json();
+    const newMovieArray = this.state.movies.map((movie) => {
+      if(movie.id === editMovieResponseParsed.data.id){
+        movie = editMovieResponseParsed.data
+      }
+      return movie
+    })
+    this.setState({
+      showEditModal: false,
+      movies: newMovieArray
+    })
+    } catch (err) {
+      // res.send(err)
+    }
+    
     // If you feel up to make the modal (EditMovie Component) and show at the appropiate times
 
   }
