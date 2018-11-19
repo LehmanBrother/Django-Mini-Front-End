@@ -16,7 +16,9 @@ class MovieContainer extends Component {
         description: '',
         _id: ''
       },
-      showEditModal: false
+      showEditModal: false,
+      message: '',
+      isLoggedIn: false
     }
   }
   getMovies = async () => {
@@ -32,23 +34,34 @@ class MovieContainer extends Component {
     return moviesParsedJSON
   }
   componentDidMount(){
+    console.log(this.props, '<---- MOVIE CONTAINER PROPS PROPS PROPS');
     // get ALl the movies, on the intial load of the APP
     this.getMovies().then((movies) => {
-      if(movies.message === 'Must be logged in to see the data'){
+      if(movies.message === 'Not Logged'){
         console.log('Must Be LOGGED IN');
+
       } else {
-        this.setState({movies: movies.data})
+        this.setState({
+          movies: movies.data, 
+          isLoggedIn: true
+        })
       }
     }).catch((err) => {
       console.log(err);
     })
     /// Where you call this.getMovies
   }
+  changeMessage = (message) => {
+    this.setState({
+      message: message
+    })
+  }
   addMovie = async (movie, e) => {
     // .bind arguments take presidence over every other argument
     e.preventDefault();
     console.log(movie);
-    try {
+    if(this.state.isLoggedIn){
+      try {
       const csrfCookie = getCookie('csrftoken');
       const createdMovie = await fetch('http://localhost:8000/movies/', {
         method: 'POST',
@@ -65,6 +78,10 @@ class MovieContainer extends Component {
     } catch(err){
       console.log(err)
     }
+    } else {
+      this.changeMessage('Please Log In');
+    }
+    
     // request address will start with 'http://localhost:9000'
     // Set up your post request with fetch, Maybe lookup how do i do post request with fetch,
     // headers: {'Content-Type': 'application/json'}
@@ -159,7 +176,9 @@ class MovieContainer extends Component {
   render(){
     console.log(this.state)
     return (
-      <Grid columns={2} divided textAlign='center' style={{ height: '100%' }} verticalAlign='top' stackable>
+      <div>
+        <h4>{this.state.message}</h4>
+        <Grid columns={2} divided textAlign='center' style={{ height: '100%' }} verticalAlign='top' stackable>
         <Grid.Row>
           <Grid.Column>
             <CreateMovie addMovie={this.addMovie}/>
@@ -171,6 +190,8 @@ class MovieContainer extends Component {
           <EditMovie open={this.state.showEditModal} movieToEdit={this.state.movieToEdit} handleEditChange={this.handleEditChange} closeAndEdit={this.closeAndEdit}/>
         </Grid.Row>
       </Grid>
+      </div>
+      
       )
   }
 }

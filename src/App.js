@@ -17,6 +17,7 @@ const My404 = () => {
 
 
 class App extends Component {
+
   componentDidMount(){
     this.getToken();
   }
@@ -61,8 +62,8 @@ class App extends Component {
       <div className="App">
         <Header logOut={this.logOut}/>
         <Switch>
-          <Route exact path="/" component={Login}/>
-          <Route exact path="/register" component={Registration}/>
+          <Route exact path="/"  component={Login}/>
+          <Route exact path="/register"  component={Registration}/>
           <Route exact path="/movies" component={MovieContainer}/>
           <Route component={My404}/>
         </Switch>

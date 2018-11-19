@@ -9,12 +9,19 @@ class Login extends Component {
 
     this.state = {
       username: '',
-      password: ''
+      password: '',
+      isLoggedIn: false,
+      message: ''
     }
   }
   handleChange = (e) => {
     this.setState({
       [e.currentTarget.name]: e.currentTarget.value
+    })
+  }
+  changeMessage = (message) => {
+    this.setState({
+      message: message
     })
   }
   handleSubmit = async (e) => {
@@ -35,20 +42,29 @@ class Login extends Component {
     if(parsedResponse.data === 'login successful'){
       // change our component
       console.log('succes login')
+      this.setState({
+        isLoggedIn: true
+      })
       // this automatically get passed to your component as a prop
       this.props.history.push('/movies');
+    } else {
+      this.changeMessage('Username or password incorrect')
     }
   }
   render(){
+    console.log(this.state.isLoggedIn, '<--Logged In');
     return (
-
-      <Form onSubmit={this.handleSubmit}>
-        <Label> Username</Label>
-        <Form.Input type='text' name="username" onChange={this.handleChange} />
-        <Label> Password</Label>
-        <Form.Input type='password' name="password" onChange={this.handleChange} />
-        <Button type="Submit" color="green">Login</Button>
-      </Form>
+      <div>
+        <h4>{this.state.message}</h4>
+        <Form onSubmit={this.handleSubmit}>
+          <Label> Username</Label>
+          <Form.Input type='text' name="username" onChange={this.handleChange} />
+          <Label> Password</Label>
+          <Form.Input type='password' name="password" onChange={this.handleChange} />
+          <Button type="Submit" color="green">Login</Button>
+        </Form>
+      </div>
+      
       )
   }
 }
