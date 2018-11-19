@@ -31,12 +31,11 @@ class MovieContainer extends Component {
     // .bind arguments take presidence over every other argument
     e.preventDefault();
     console.log(movie);
-
+    try {
 
 
 
     } catch(err){
-      console.log('error')
       console.log(err)
     }
     // request address will start with 'http://localhost:9000'
