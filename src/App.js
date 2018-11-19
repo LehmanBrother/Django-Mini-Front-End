@@ -37,7 +37,7 @@ class App extends Component {
     const parsedResponse = await loginResponse.json();
     if(parsedResponse.data === 'logout successful'){
       console.log('successful logout');
-      console.log(this.props.history.push('/'), 'props');
+      // console.log(this.props.history.push('/'), 'props');
       console.log('<--props.history');
     } else {
       console.log(parsedResponse.error);
@@ -59,7 +59,7 @@ class App extends Component {
   render() {
     return (
       <div className="App">
-        <Header />
+        <Header logOut={this.logOut}/>
         <Switch>
           <Route exact path="/" component={Login}/>
           <Route exact path="/register" component={Registration}/>

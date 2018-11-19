@@ -40,12 +40,13 @@ class Registration extends Component {
 	render(){
 		return (
 			<div>
+				<h2>Register Here</h2>
 				<Form onSubmit={this.handleSubmit}>
 					<Label>Username</Label>
 					<Form.Input type='text' name='username' onChange={this.handleChange} />
 					<Label>Password</Label>
 					<Form.Input type='password' name='password' onChange={this.handleChange} />
-					<Button type="Submit" color="Green">Login></Button>
+					<Button type="Submit" color="green">Register</Button>
 				</Form>
 			</div>
 		)
